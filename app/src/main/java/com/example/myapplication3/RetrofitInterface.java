@@ -1,6 +1,8 @@
 package com.example.myapplication3;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -15,7 +17,10 @@ public interface RetrofitInterface {
     @POST("/signup")
     Call<Void> executeSignup (@Body HashMap<String, String> map);
 
-    @POST("/user")
+    @POST("/checkuser")
     Call<Void> checkUser (@Body HashMap<String, String> map);
+
+    @POST("/travel")
+    Call<Void> addTravel (@Body HashMap<String, List<String>> map);
 
 }

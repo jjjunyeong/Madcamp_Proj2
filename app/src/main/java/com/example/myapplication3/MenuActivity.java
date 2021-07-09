@@ -18,8 +18,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -106,18 +109,21 @@ public class MenuActivity extends AppCompatActivity {
                 }
 
                 if(!s_cpn1.replace(" ", "").equals("")){
+                    //check database to see if s_cpn1 id exists
                     check_user(s_cpn1, check3, v);
                 } else {
                     check3.setVisibility(v.INVISIBLE);
                 }
 
                 if(!s_cpn2.replace(" ", "").equals("")){
+                    //check database to see if s_cpn2 id exists
                     check_user(s_cpn2, check4, v);
                 } else {
                     check4.setVisibility(v.INVISIBLE);
                 }
 
                 if(!s_cpn3.replace(" ", "").equals("")){
+                    //check database to see if s_cpn3 id exists
                     check_user(s_cpn3, check5, v);
                 } else {
                     check5.setVisibility(v.INVISIBLE);
@@ -125,9 +131,51 @@ public class MenuActivity extends AppCompatActivity {
 
                 if(check1.getVisibility() == v.INVISIBLE && check2.getVisibility() == v.INVISIBLE && check3.getVisibility() == v.INVISIBLE && check4.getVisibility() == v.INVISIBLE && check5.getVisibility() == v.INVISIBLE) {
                     Toast.makeText(getApplicationContext(), s_jny_name + ", " + s_date + ", " + s_cpn1 + ", " + s_cpn2 + ", " + s_cpn3, Toast.LENGTH_SHORT).show();
+                    HashMap<String, List<String>> map = new HashMap<String, List<String>>();
+
+                    List<String> arraylist1 = new ArrayList<>();
+                    arraylist1.add(s_jny_name);
+                    map.put("journey_name", arraylist1);
+
+                    List<String> arraylist2 = new ArrayList<>();
+                    arraylist2.add(s_date);
+                    map.put("date", arraylist2);
+
+                    List<String> arraylist3 = new ArrayList<>();
+                    if(!s_cpn1.replace(" ", "").equals("")){
+                        arraylist3.add(s_cpn1);
+                    }
+                    if(!s_cpn2.replace(" ", "").equals("")){
+                        arraylist3.add(s_cpn2);
+                    }
+                    if(!s_cpn3.replace(" ", "").equals("")){
+                        arraylist3.add(s_cpn3);
+                    }
+                    map.put("id", arraylist3);
+
+                    //upload on database
+                    add_travel(map);
                     dialog.dismiss();
                 }
+            }
+        });
+    }
 
+    public void add_travel(HashMap<String, List<String>> map){
+        Call<Void> call = LoginActivity.retrofitInterface.addTravel(map);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+
+                if (response.code() == 200) {
+                    Toast.makeText(getApplicationContext(), "Upload success", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -157,7 +205,6 @@ public class MenuActivity extends AppCompatActivity {
 
                 } else if (response.code() == 400) {
                     imageView.setVisibility(view.VISIBLE);
-                    //check = false;
                     Log.d("checkUser", "visible");
                     //Toast.makeText(getApplicationContext(), "User does not exist", Toast.LENGTH_SHORT).show();
                 }
@@ -168,7 +215,6 @@ public class MenuActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-        //Toast.makeText(getApplicationContext(), result+"", Toast.LENGTH_SHORT).show();
     }
 
 
