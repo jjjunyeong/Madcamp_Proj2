@@ -12,7 +12,5 @@ public class LoginResult {
         return id;
     }
 
-    public String getPassword() {
-        return password;
-    }
+    public String getPassword() { return password; }
 }
