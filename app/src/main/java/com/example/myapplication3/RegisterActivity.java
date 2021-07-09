@@ -58,13 +58,13 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (response.code() == 200) {
                     Toast.makeText(getApplicationContext(),
-                            "Signed up successfully", Toast.LENGTH_LONG).show();
+                            "Signed up successfully", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                     startActivity(intent);
 
                 } else if (response.code() == 400) {
                     Toast.makeText(getApplicationContext(),
-                            "Already registered", Toast.LENGTH_LONG).show();
+                            "Already registered", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -72,7 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), t.getMessage(),
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }

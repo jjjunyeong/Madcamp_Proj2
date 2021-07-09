@@ -83,7 +83,6 @@ public class LoginActivity extends AppCompatActivity {
 
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.putExtra("id", result.getID());
-                    intent.putExtra("password", result.getPassword());
 
                     Toast.makeText(getApplicationContext(), "Login Success",
                             Toast.LENGTH_SHORT).show();
