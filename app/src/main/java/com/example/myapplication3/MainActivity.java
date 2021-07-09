@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(),
                         "menu", Toast.LENGTH_SHORT).show();
-//                Intent intent_menu = new Intent(MainActivity.this, MenuActivity.class);
-//                startActivity(intent_menu);
+                Intent intent_menu = new Intent(MainActivity.this, MenuActivity.class);
+                startActivity(intent_menu);
             }
         });
 
