@@ -34,18 +34,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Intent intent = getIntent();
-        if (intent.getExtras() != null) {
-            id = intent.getStringExtra("id");
-        }
+        id = intent.getStringExtra("id");
 
         fab_menu = findViewById(R.id.fab_menu);
 
         fab_menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),
-                        "menu", Toast.LENGTH_SHORT).show();
                 Intent intent_menu = new Intent(MainActivity.this, MenuActivity.class);
+                intent_menu.putExtra("id", id);
                 startActivity(intent_menu);
             }
         });
