@@ -25,4 +25,7 @@ public interface RetrofitInterface {
     @POST("/gettravel")
     Call<List<TravelResult>> getTravel (@Body HashMap<String, String> map);
 
+    @POST("/removetravel")
+    Call<Void> removeTravel (@Body HashMap<String, String> map);
+
 }
