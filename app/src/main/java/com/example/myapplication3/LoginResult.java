@@ -6,7 +6,11 @@ public class LoginResult {
 
     private String id;
 
+    private String password;
+
     public String getID() {
         return id;
     }
+
+    public String getPassword() {return password;}
 }

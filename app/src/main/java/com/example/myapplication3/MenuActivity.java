@@ -1,10 +1,12 @@
 package com.example.myapplication3;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -52,8 +54,8 @@ public class MenuActivity extends AppCompatActivity {
                 addJourney();
             }
         });
-
     }
+
 
     private void add_items(){
         HashMap<String, String> map = new HashMap<>();
@@ -67,7 +69,7 @@ public class MenuActivity extends AppCompatActivity {
                 if (response.code() == 200) {
                     List<TravelResult> result = response.body();
 
-                    JourneyGridviewAdapter adapter = new JourneyGridviewAdapter(result, getApplicationContext());
+                    JourneyGridviewAdapter adapter = new JourneyGridviewAdapter(result, getApplicationContext(), MenuActivity.this);
                     gridView.setAdapter(adapter);
 
                 } else if (response.code() == 404) {
