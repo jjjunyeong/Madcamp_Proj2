@@ -101,7 +101,6 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
-        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/et_jny_name"
         app:layout_constraintTop_toTopOf="@+id/et_jny_name"
         app:srcCompat="@drawable/ic_problem" />
@@ -113,7 +112,6 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
-        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/et_date"
         app:layout_constraintTop_toTopOf="@+id/et_date"
         app:srcCompat="@drawable/ic_problem" />
@@ -125,7 +123,6 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
-        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/et_cpn1"
         app:layout_constraintTop_toTopOf="@+id/et_cpn1"
         app:srcCompat="@drawable/ic_problem" />
@@ -137,7 +134,6 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
-        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/et_cpn2"
         app:layout_constraintTop_toTopOf="@+id/et_cpn2"
         app:srcCompat="@drawable/ic_problem" />
@@ -149,7 +145,6 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
-        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/et_cpn3"
         app:layout_constraintTop_toTopOf="@+id/et_cpn3"
         app:srcCompat="@drawable/ic_problem" />

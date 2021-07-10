@@ -6,8 +6,6 @@ public class LoginResult {
 
     private String id;
 
-    private String name;
-
     public String getID() {
         return id;
     }

@@ -1,31 +1,23 @@
 package com.example.myapplication3;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import java.time.chrono.JapaneseDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,6 +29,8 @@ public class MenuActivity extends AppCompatActivity {
     private EditText et_jny_name, date, cpn1, cpn2, cpn3;
     private String id, s_jny_name, s_date, s_cpn1, s_cpn2, s_cpn3;
     private ImageView check1, check2, check3, check4, check5;
+    private GridView gridView;
+    private List<Journey> items;
     //boolean check;
 
     @Override
@@ -47,6 +41,10 @@ public class MenuActivity extends AppCompatActivity {
         Intent intent = getIntent();
         id = intent.getStringExtra("id");
 
+        gridView = findViewById(R.id.gridView);
+
+        add_items();
+
         btn_add = findViewById(R.id.btn_add);
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +53,48 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void add_items(){
+        HashMap<String, String> map = new HashMap<>();
+        map.put("id", id);
+
+        Call<List<TravelResult>> call = LoginActivity.retrofitInterface.getTravel(map);
+
+        call.enqueue(new Callback<List<TravelResult>>() {
+            @Override
+            public void onResponse(Call<List<TravelResult>> call, Response<List<TravelResult>> response) {
+                if (response.code() == 200) {
+                    List<TravelResult> result = response.body();
+
+                    JourneyGridviewAdapter adapter = new JourneyGridviewAdapter(result, getApplicationContext());
+                    gridView.setAdapter(adapter);
+
+                } else if (response.code() == 404) {
+                    Toast.makeText(getApplicationContext(), "Let's start our first journey!",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<TravelResult>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getMessage(),
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    public class Journey {
+        String journey_name;
+        String date;
+        String companions;
+
+        Journey(String journey_name, String date, String companions){
+            this.journey_name = journey_name;
+            this.date = date;
+            this.companions = companions;
+        }
     }
 
     private void addJourney(){
@@ -130,7 +170,6 @@ public class MenuActivity extends AppCompatActivity {
                 }
 
                 if(check1.getVisibility() == v.INVISIBLE && check2.getVisibility() == v.INVISIBLE && check3.getVisibility() == v.INVISIBLE && check4.getVisibility() == v.INVISIBLE && check5.getVisibility() == v.INVISIBLE) {
-                    Toast.makeText(getApplicationContext(), s_jny_name + ", " + s_date + ", " + s_cpn1 + ", " + s_cpn2 + ", " + s_cpn3, Toast.LENGTH_SHORT).show();
                     HashMap<String, List<String>> map = new HashMap<String, List<String>>();
 
                     List<String> arraylist1 = new ArrayList<>();
@@ -142,6 +181,7 @@ public class MenuActivity extends AppCompatActivity {
                     map.put("date", arraylist2);
 
                     List<String> arraylist3 = new ArrayList<>();
+                    arraylist3.add(id);
                     if(!s_cpn1.replace(" ", "").equals("")){
                         arraylist3.add(s_cpn1);
                     }
@@ -153,9 +193,18 @@ public class MenuActivity extends AppCompatActivity {
                     }
                     map.put("id", arraylist3);
 
+                    List<String> arraylist4 = new ArrayList<>();
+                    arraylist4.add(36.3721+"");
+                    arraylist4.add(127.3604+"");
+                    map.put("coordinates", arraylist4);
+
+                    //should also provide default value of route later
+
                     //upload on database
                     add_travel(map);
                     dialog.dismiss();
+
+                    add_items();
                 }
             }
         });
@@ -229,6 +278,5 @@ public class MenuActivity extends AppCompatActivity {
         String year_string = Integer.toString(year);
         s_date = (year_string + "/" + month_string + "/" + day_string);
         date.setText(s_date);
-//        Toast.makeText(getApplicationContext(),"Date: "+dateMessage,Toast.LENGTH_SHORT).show();
     }
 }

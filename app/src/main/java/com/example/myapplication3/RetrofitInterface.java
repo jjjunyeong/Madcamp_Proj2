@@ -6,7 +6,6 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface RetrofitInterface {
@@ -22,5 +21,9 @@ public interface RetrofitInterface {
 
     @POST("/travel")
     Call<Void> addTravel (@Body HashMap<String, List<String>> map);
+
+    @POST("/gettravel")
+    Call<List<TravelResult>> getTravel (@Body HashMap<String, String> map);
+
 
 }
