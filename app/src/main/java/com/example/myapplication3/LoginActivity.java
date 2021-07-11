@@ -92,6 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else if (response.code() == 404) {
                     Toast.makeText(getApplicationContext(), "Wrong Credentials",
                             Toast.LENGTH_SHORT).show();
+
                 }
 
             }

@@ -13,6 +13,7 @@ public class MapActivity extends AppCompatActivity {
 
     TextView textView;
     String coordinates;
+    String id;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -23,8 +24,13 @@ public class MapActivity extends AppCompatActivity {
         textView = findViewById(R.id.textView2);
 
         Intent intent = getIntent();
+        id = intent.getExtras().getString("id");
         coordinates = intent.getExtras().getString("coordinates");
         textView.setText(coordinates);
 
     }
+
+
+
+
 }

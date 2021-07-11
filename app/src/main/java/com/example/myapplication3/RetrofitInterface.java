@@ -1,6 +1,5 @@
 package com.example.myapplication3;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,9 +22,12 @@ public interface RetrofitInterface {
     Call<Void> addTravel (@Body HashMap<String, List<String>> map);
 
     @POST("/gettravel")
-    Call<List<TravelResult>> getTravel (@Body HashMap<String, String> map);
+    Call<List<GetTravelResult>> getTravel (@Body HashMap<String, String> map);
 
     @POST("/removetravel")
     Call<Void> removeTravel (@Body HashMap<String, String> map);
+
+    @POST("/updatetravel")
+    Call<Void> updateTravel (@Body HashMap<String, List<String>> map);
 
 }

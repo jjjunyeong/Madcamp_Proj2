@@ -22,6 +22,7 @@
         <activity android:name=".RegisterActivity"></activity>
         <activity android:name=".MainActivity"></activity>
         <activity android:name=".MenuActivity"></activity>
+        <activity android:name=".MapActivity"></activity>
     </application>
 
 </manifest>

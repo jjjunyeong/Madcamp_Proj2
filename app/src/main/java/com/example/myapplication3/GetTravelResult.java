@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class TravelResult {
+public class GetTravelResult{
 
     @SerializedName("journey_name")
     @Expose
@@ -23,7 +23,7 @@ public class TravelResult {
     private List<String> coordinates;
 
 
-    public TravelResult(List<String> journey_name, List<String> date, List<String> id, List<String> coordinates){
+    public GetTravelResult(List<String> journey_name, List<String> date, List<String> id, List<String> coordinates){ ;
         this.journey_name = journey_name;
         this.date = date;
         this.id = id;
