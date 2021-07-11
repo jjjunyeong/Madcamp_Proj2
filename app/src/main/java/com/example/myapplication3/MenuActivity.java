@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -78,7 +79,7 @@ public class MenuActivity extends AppCompatActivity {
                 if (response.code() == 200) {
                     List<GetTravelResult> result = response.body();
 
-                    MyJourneyGridviewAdapter adapter = new MyJourneyGridviewAdapter(result, getApplicationContext());
+                    JourneyGridviewAdapter adapter = new JourneyGridviewAdapter(result, getApplicationContext());
                     gridView.setAdapter(adapter);
 
                     //on item click, go to MapActivity
@@ -165,6 +166,7 @@ public class MenuActivity extends AppCompatActivity {
 
     }
 
+    //change to "shared":["true"] for give item
     private void upload_share_item(String share_journey_name, String share_date, String share_cpns, String share_coordinates, Boolean shared){
         HashMap<String, List<String>> map = new HashMap<>();
 
@@ -566,83 +568,6 @@ public class MenuActivity extends AppCompatActivity {
         String year_string = Integer.toString(year);
         s_date = (year_string + "/" + month_string + "/" + day_string);
         date.setText(s_date);
-    }
-
-    //gridview adapter
-    public class MyJourneyGridviewAdapter extends BaseAdapter{
-        private Context context;
-        private List<GetTravelResult> travelresults;
-
-        public MyJourneyGridviewAdapter(List<GetTravelResult> travelresults, Context context){
-            this.travelresults = travelresults;
-            this.context = context;
-        }
-
-        public String getItemJourneyName(int position) {
-            return travelresults.get(position).getJourneyName();
-        }
-
-        public String getItemDate(int position) {
-            return travelresults.get(position).getDate();
-        }
-
-        public String getItemCompanionIds(int position) {
-            return travelresults.get(position).getCompanions();
-        }
-
-        public String getItemUserId(int position) {
-            return travelresults.get(position).getId();
-        }
-
-        public String getItemCoordinates(int position){
-            return travelresults.get(position).getCoordinates();
-        }
-
-        public String getItemShared(int position){
-            return travelresults.get(position).getShared();
-        }
-
-        @Override
-        public int getCount() {
-            return travelresults.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return travelresults.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.griditem_journey, viewGroup, false);
-
-            TextView gv_jny_name = view.findViewById(R.id.gv_jny_name);
-            TextView gv_date = view.findViewById(R.id.gv_date);
-            TextView gv_cpns = view.findViewById(R.id.gv_cpns);
-
-            final GetTravelResult thisTravelResult = travelresults.get(i);
-
-            String s_jny_name = thisTravelResult.getJourneyName();
-            String s_date = thisTravelResult.getDate();
-            String s_cpns = thisTravelResult.getCompanions();
-            String id = thisTravelResult.getId();
-            String shared = thisTravelResult.getShared();
-
-            gv_jny_name.setText(s_jny_name);
-            gv_date.setText(s_date);
-            gv_cpns.setText(s_cpns);
-
-            return view;
-
-
-        }
-
     }
 
 }
