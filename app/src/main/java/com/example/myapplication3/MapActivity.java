@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +19,6 @@ public class MapActivity extends AppCompatActivity {
 
     TextView textView;
     String coordinates;
-    String id;
 
     FloatingActionButton fbtn_add, fbtn_flag, fbtn_chat, fbtn_recording;
     Animation fromBottom, toBottom, rotateOpen, rotateClose;
@@ -34,7 +34,7 @@ public class MapActivity extends AppCompatActivity {
         textView = findViewById(R.id.textView2);
 
         Intent intent = getIntent();
-        id = intent.getExtras().getString("id");
+        String shared = intent.getExtras().getString("shared");
         coordinates = intent.getExtras().getString("coordinates");
         textView.setText(coordinates);
 
@@ -48,6 +48,11 @@ public class MapActivity extends AppCompatActivity {
         fbtn_chat = findViewById(R.id.fbtn_chat);
         fbtn_flag = findViewById(R.id.fbtn_flag);
         fbtn_recording = findViewById(R.id.fbtn_start);
+
+        if(shared.equals("all")){
+            fbtn_add.setVisibility(View.GONE);
+            fbtn_recording.setVisibility(View.GONE);
+        }
 
         fbtn_add.setOnClickListener(new View.OnClickListener() {
             @Override

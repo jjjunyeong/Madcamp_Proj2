@@ -90,7 +90,7 @@ public class MenuActivity extends AppCompatActivity {
                             String coordinates = adapter.getItemCoordinates(i);
                             String id = adapter.getItemUserId(i);
                             Intent intent = new Intent(MenuActivity.this, MapActivity.class);
-                            intent.putExtra("id", id);
+                            intent.putExtra("shared", "mine");
                             intent.putExtra("coordinates", coordinates);
                             startActivity(intent);
                         }

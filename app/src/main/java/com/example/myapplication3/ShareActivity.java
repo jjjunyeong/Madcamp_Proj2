@@ -51,6 +51,22 @@ public class ShareActivity extends AppCompatActivity {
                     List<GetTravelResult> result = response.body();
                     JourneyGridviewAdapter adapter = new JourneyGridviewAdapter(result, getApplicationContext());
                     gridView.setAdapter(adapter);
+
+                    //on item click, go to MapActivity
+                    //show item map, focus on coordinates, ...
+                    gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int i, long o) {
+                            String coordinates = adapter.getItemCoordinates(i);
+                            String id = adapter.getItemUserId(i);
+                            Intent intent = new Intent(ShareActivity.this, MapActivity.class);
+                            intent.putExtra("shared", "all");
+                            intent.putExtra("coordinates", coordinates);
+                            startActivity(intent);
+                        }
+                    });
+
+
                 }
             }
 
