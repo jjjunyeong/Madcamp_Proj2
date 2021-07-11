@@ -36,7 +36,6 @@ public class MenuActivity extends AppCompatActivity {
     private String id, s_jny_name, s_date, s_cpn1, s_cpn2, s_cpn3;
     private ImageView check1, check2, check3, check4, check5;
     private GridView gridView;
-    //boolean check;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -102,6 +101,7 @@ public class MenuActivity extends AppCompatActivity {
                         @Override
                         public boolean onItemLongClick(AdapterView<?> parent, View view, int i, long l) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(MenuActivity.this);
+                            String shared = adapter.getItemShared(i);
                             builder.setTitle("Modify/Delete Journey");
                             builder.setMessage("what do you want to do with this journey?");
                             builder.setPositiveButton("delete",
@@ -124,17 +124,31 @@ public class MenuActivity extends AppCompatActivity {
                                             //dialog.cancel();
                                         }
                                     });
-                            builder.setNeutralButton("share",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            String a = adapter.getItemJourneyName(i);
-                                            String b = adapter.getItemDate(i);
-                                            String c = adapter.getItemCompanionIds(i);
-                                            String d = adapter.getItemCoordinates(i);
-                                            upload_share_item(a, b, c, d);
-                                            dialog.cancel();
-                                        }
-                                    });
+                            if(shared.equals("false")){
+                                builder.setNeutralButton("share",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                String a = adapter.getItemJourneyName(i);
+                                                String b = adapter.getItemDate(i);
+                                                String c = adapter.getItemCompanionIds(i);
+                                                String d = adapter.getItemCoordinates(i);
+                                                upload_share_item(a, b, c, d, false);
+                                                dialog.cancel();
+                                            }
+                                        });
+                            } else {
+                                builder.setNeutralButton("unshare",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                String a = adapter.getItemJourneyName(i);
+                                                String b = adapter.getItemDate(i);
+                                                String c = adapter.getItemCompanionIds(i);
+                                                String d = adapter.getItemCoordinates(i);
+                                                upload_share_item(a, b, c, d, true);
+                                                dialog.cancel();
+                                            }
+                                        });
+                            }
                             builder.show();
                             return true;
                         }
@@ -151,7 +165,7 @@ public class MenuActivity extends AppCompatActivity {
 
     }
 
-    private void upload_share_item(String share_journey_name, String share_date, String share_cpns, String share_coordinates){
+    private void upload_share_item(String share_journey_name, String share_date, String share_cpns, String share_coordinates, Boolean shared){
         HashMap<String, List<String>> map = new HashMap<>();
 
         List<String> arraylist1 = new ArrayList<>();
@@ -169,8 +183,13 @@ public class MenuActivity extends AppCompatActivity {
         map.put("id", arraylist2);
 
         List<String> arraylist3 = new ArrayList<>();
-        arraylist3.add("true");
+        if(shared) { arraylist3.add("false"); }
+        else { arraylist3.add("true"); }
         map.put("shared", arraylist3);
+
+        List<String> arraylist4 = new ArrayList<>();
+        arraylist4.add(share_date);
+        map.put("date", arraylist4);
 
         Call<Void> call = LoginActivity.retrofitInterface.updateTravel(map);
 
@@ -179,6 +198,7 @@ public class MenuActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.code() == 200) {
                     Toast.makeText(getApplicationContext(), "your journey is shared", Toast.LENGTH_SHORT).show();
+                    show_items();
                 }
             }
 
@@ -437,6 +457,7 @@ public class MenuActivity extends AppCompatActivity {
                 //user is free to submit companion names or not
                 //companion id should exist in DB
                 //companion id should not be user id
+
                 if(!s_cpn1.replace(" ", "").equals("")){ check_user(s_cpn1, check3, v); }
                 else { check3.setVisibility(v.INVISIBLE); }
 
@@ -481,9 +502,6 @@ public class MenuActivity extends AppCompatActivity {
 
                     //dismiss dialog
                     dialog.dismiss();
-
-                    //refresh gridview
-                    show_items();
                 }
             }
         });
@@ -497,6 +515,7 @@ public class MenuActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.code() == 200) {
                     Toast.makeText(getApplicationContext(), "upload success", Toast.LENGTH_SHORT).show();
+                    show_items();
                 }
             }
 
@@ -579,6 +598,10 @@ public class MenuActivity extends AppCompatActivity {
             return travelresults.get(position).getCoordinates();
         }
 
+        public String getItemShared(int position){
+            return travelresults.get(position).getShared();
+        }
+
         @Override
         public int getCount() {
             return travelresults.size();
@@ -609,6 +632,7 @@ public class MenuActivity extends AppCompatActivity {
             String s_date = thisTravelResult.getDate();
             String s_cpns = thisTravelResult.getCompanions();
             String id = thisTravelResult.getId();
+            String shared = thisTravelResult.getShared();
 
             gv_jny_name.setText(s_jny_name);
             gv_date.setText(s_date);
