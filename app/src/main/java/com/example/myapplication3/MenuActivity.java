@@ -118,10 +118,16 @@ public class MenuActivity extends AppCompatActivity {
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
                                             String a = adapter.getItemJourneyName(i);
-                                            String b = adapter.getItemUserId(i);
-                                            String c = adapter.getItemDate(i);
-                                            String d = adapter.getItemCompanionIds(i);
-                                            modify_item(a, b, c, d);
+                                            String b = adapter.getItemDate(i);
+                                            String c = adapter.getItemCompanionIds(i);
+                                            String d = adapter.getItemShared(i);
+                                            String e = adapter.getItemLike(i);
+                                            String f = adapter.getItemCoordinates(i);
+                                            String g = adapter.getItemLat(i);
+                                            String h = adapter.getItemLng(i);
+                                            String j = adapter.getItemUserId(i);
+                                            String k = adapter.getItemLikeIds(i);
+                                            modify_item(a, b, c, d, e, f, g, h, j, k);
                                             //dialog.cancel();
                                         }
                                     });
@@ -132,8 +138,13 @@ public class MenuActivity extends AppCompatActivity {
                                                 String a = adapter.getItemJourneyName(i);
                                                 String b = adapter.getItemDate(i);
                                                 String c = adapter.getItemCompanionIds(i);
-                                                String d = adapter.getItemCoordinates(i);
-                                                upload_share_item(a, b, c, d, false);
+                                                String d = adapter.getItemShared(i);
+                                                String e = adapter.getItemLike(i);
+                                                String f = adapter.getItemCoordinates(i);
+                                                String g = adapter.getItemLat(i);
+                                                String h = adapter.getItemLng(i);
+                                                String j = adapter.getItemLikeIds(i);
+                                                upload_share_item(a, b, c, false, e, f, g, h, j);
                                                 dialog.cancel();
                                             }
                                         });
@@ -144,8 +155,13 @@ public class MenuActivity extends AppCompatActivity {
                                                 String a = adapter.getItemJourneyName(i);
                                                 String b = adapter.getItemDate(i);
                                                 String c = adapter.getItemCompanionIds(i);
-                                                String d = adapter.getItemCoordinates(i);
-                                                upload_share_item(a, b, c, d, true);
+                                                String d = adapter.getItemShared(i);
+                                                String e = adapter.getItemLike(i);
+                                                String f = adapter.getItemCoordinates(i);
+                                                String g = adapter.getItemLat(i);
+                                                String h = adapter.getItemLng(i);
+                                                String j = adapter.getItemLikeIds(i);
+                                                upload_share_item(a, b, c,true, e, f, g, h, j);
                                                 dialog.cancel();
                                             }
                                         });
@@ -167,7 +183,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     //change to "shared":["true"] for give item
-    private void upload_share_item(String share_journey_name, String share_date, String share_cpns, String share_coordinates, Boolean shared){
+    private void upload_share_item(String share_journey_name, String share_date, String share_cpns, Boolean shared, String like, String coordinates, String lat, String lng, String likeids){
         HashMap<String, List<String>> map = new HashMap<>();
 
         List<String> arraylist1 = new ArrayList<>();
@@ -192,6 +208,38 @@ public class MenuActivity extends AppCompatActivity {
         List<String> arraylist4 = new ArrayList<>();
         arraylist4.add(share_date);
         map.put("date", arraylist4);
+
+        List<String> arraylist5 = new ArrayList<>();
+        arraylist5.add(like);
+        map.put("like", arraylist5);
+
+        String[] subtokens2 = coordinates.split(", ");
+        List<String> arraylist6 = new ArrayList<>();
+        for(int i=0; i<subtokens2.length; i++){
+            arraylist6.add(subtokens2[i]);
+        }
+        map.put("coordinates", arraylist6);
+
+        String[] subtokens3 = lat.split(", ");
+        List<String> arraylist7 = new ArrayList<>();
+        for(int i=0; i<subtokens3.length; i++){
+            arraylist7.add(subtokens3[i]);
+        }
+        map.put("lat", arraylist7);
+
+        String[] subtokens4 = lng.split(", ");
+        List<String> arraylist8 = new ArrayList<>();
+        for(int i=0; i<subtokens4.length; i++){
+            arraylist8.add(subtokens4[i]);
+        }
+        map.put("lng", arraylist8);
+
+        String[] subtokens5 = likeids.split(", ");
+        List<String> arraylist9 = new ArrayList<>();
+        for(int i=0; i<subtokens5.length; i++){
+            arraylist9.add(subtokens5[i]);
+        }
+        map.put("likeids", arraylist9);
 
         Call<Void> call = LoginActivity.retrofitInterface.updateTravel(map);
 
@@ -247,7 +295,7 @@ public class MenuActivity extends AppCompatActivity {
     //update_journey()
     //find document with original journey_name and original ids(companions)
     //modify document with new input items
-    private void modify_item(String org_journey_name, String org_id, String org_date, String org_cpns){
+    private void modify_item(String org_journey_name, String org_date, String org_cpns, String org_shared, String org_like, String org_coordinates, String org_lat, String org_lng, String org_id, String org_likeids){
         HashMap<String, List<String>> map = new HashMap<>();
 
         List<String> find_arraylist1 = new ArrayList<>();
@@ -290,9 +338,7 @@ public class MenuActivity extends AppCompatActivity {
         for(int i=0; i<subtokens.length; i++){
             find_arraylist2.add(subtokens[i]);
         }
-        //find_arraylist2.add(org_id);
         map.put("find_id", find_arraylist2);
-        //Log.d("Modify", "find_id: " + org_id);
 
         View view = getLayoutInflater().inflate(R.layout.add_dialog, null);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -377,6 +423,42 @@ public class MenuActivity extends AppCompatActivity {
                     if(!s_cpn2.replace(" ", "").equals("")){ arraylist3.add(s_cpn2); }
                     if(!s_cpn3.replace(" ", "").equals("")){ arraylist3.add(s_cpn3); }
                     map.put("id", arraylist3);
+
+                    List<String> arraylist4 = new ArrayList<>();
+                    arraylist4.add(org_shared);
+                    map.put("shared", arraylist4);
+
+                    List<String> arraylist5 = new ArrayList<>();
+                    arraylist5.add(org_like);
+                    map.put("like", arraylist5);
+
+                    String[] subtokens2 = org_coordinates.split(", ");
+                    List<String> arraylist6 = new ArrayList<>();
+                    for(int i=0; i<subtokens2.length; i++){
+                        arraylist6.add(subtokens2[i]);
+                    }
+                    map.put("coordinates", arraylist6);
+
+                    String[] subtokens3 = org_lat.split(", ");
+                    List<String> arraylist7 = new ArrayList<>();
+                    for(int i=0; i<subtokens3.length; i++){
+                        arraylist7.add(subtokens3[i]);
+                    }
+                    map.put("lat", arraylist7);
+
+                    String[] subtokens4 = org_lng.split(", ");
+                    List<String> arraylist8 = new ArrayList<>();
+                    for(int i=0; i<subtokens4.length; i++){
+                        arraylist8.add(subtokens4[i]);
+                    }
+                    map.put("lng", arraylist8);
+
+                    String[] subtokens5 = org_likeids.split(", ");
+                    List<String> arraylist9 = new ArrayList<>();
+                    for(int i=0; i<subtokens5.length; i++){
+                        arraylist9.add(subtokens5[i]);
+                    }
+                    map.put("likeids", arraylist9);
 
                     //update on database
                     update_journey(map);
@@ -497,7 +579,22 @@ public class MenuActivity extends AppCompatActivity {
                     arraylist5.add("false");
                     map.put("shared", arraylist5);
 
-                    //should also provide default value of route later
+                    List<String> arrayList6 = new ArrayList<>();
+                    arrayList6.add("0");
+                    map.put("like", arrayList6);
+
+                    //default value of route
+                    List<String> arrayList7 = new ArrayList<>();
+                    arrayList7.add("null");
+                    map.put("lat", arrayList7);
+
+                    List<String> arrayList8 = new ArrayList<>();
+                    arrayList8.add("null");
+                    map.put("lng", arrayList8);
+
+                    List<String> arrayList9 = new ArrayList<>();
+                    arrayList9.add("null");
+                    map.put("likeids", arrayList9);
 
                     //upload on database
                     upload_journey(map);
@@ -516,7 +613,7 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.code() == 200) {
-                    Toast.makeText(getApplicationContext(), "upload success", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "upload success", Toast.LENGTH_SHORT).show();
                     show_items();
                 }
             }

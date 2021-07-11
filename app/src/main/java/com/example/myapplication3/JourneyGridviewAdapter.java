@@ -43,6 +43,22 @@ public class JourneyGridviewAdapter extends BaseAdapter {
         return travelresults.get(position).getShared();
     }
 
+    public String getItemLike(int position){
+        return travelresults.get(position).getLike();
+    }
+
+    public String getItemLat(int position){
+        return travelresults.get(position).getLat();
+    }
+
+    public String getItemLng(int position){
+        return travelresults.get(position).getLng();
+    }
+
+    public String getItemLikeIds(int position){
+        return travelresults.get(position).getLikeIds();
+    }
+
     public int getCount() {
         return travelresults.size();
     }

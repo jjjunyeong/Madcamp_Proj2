@@ -33,5 +33,8 @@ public interface RetrofitInterface {
     @POST("/getsharedtravel")
     Call<List<GetTravelResult>> getSharedTravel (@Body HashMap<String, String> map);
 
+    @POST("/searchsharedtravel")
+    Call<Void> searchSharedTravel (@Body HashMap<String, String> map);
+
 
 }
