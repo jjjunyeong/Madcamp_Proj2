@@ -124,10 +124,14 @@ public class MenuActivity extends AppCompatActivity {
                                             //dialog.cancel();
                                         }
                                     });
-                            builder.setNeutralButton("cancel",
+                            builder.setNeutralButton("share",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
-                                            Toast.makeText(getApplicationContext(),"cancel",Toast.LENGTH_LONG).show();
+                                            String a = adapter.getItemJourneyName(i);
+                                            String b = adapter.getItemDate(i);
+                                            String c = adapter.getItemCompanionIds(i);
+                                            String d = adapter.getItemCoordinates(i);
+                                            upload_share_item(a, b, c, d);
                                             dialog.cancel();
                                         }
                                     });
@@ -144,6 +148,46 @@ public class MenuActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+
+    }
+
+    private void upload_share_item(String share_journey_name, String share_date, String share_cpns, String share_coordinates){
+        HashMap<String, List<String>> map = new HashMap<>();
+
+        List<String> arraylist1 = new ArrayList<>();
+        arraylist1.add(share_journey_name);
+        map.put("find_journey_name", arraylist1);
+
+        List<String> arraylist2 = new ArrayList<>();
+        String[] tokens = share_cpns.split(", ");
+        for(int i=0; i<tokens.length; i++){
+            arraylist2.add(tokens[i]);
+        }
+        map.put("find_id", arraylist2);
+
+        map.put("journey_name", arraylist1);
+        map.put("id", arraylist2);
+
+        List<String> arraylist3 = new ArrayList<>();
+        arraylist3.add("true");
+        map.put("shared", arraylist3);
+
+        Call<Void> call = LoginActivity.retrofitInterface.updateTravel(map);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.code() == 200) {
+                    Toast.makeText(getApplicationContext(), "your journey is shared", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
     }
 
@@ -425,6 +469,10 @@ public class MenuActivity extends AppCompatActivity {
                     arraylist4.add(36.3721+"");
                     arraylist4.add(127.3604+"");
                     map.put("coordinates", arraylist4);
+
+                    List<String> arraylist5 = new ArrayList<>();
+                    arraylist5.add("false");
+                    map.put("shared", arraylist5);
 
                     //should also provide default value of route later
 

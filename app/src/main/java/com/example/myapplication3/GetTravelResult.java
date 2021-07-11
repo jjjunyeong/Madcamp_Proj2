@@ -21,13 +21,17 @@ public class GetTravelResult{
     @SerializedName("coordinates")
     @Expose
     private List<String> coordinates;
+    @SerializedName("shared")
+    @Expose
+    private List<String> shared;
 
 
-    public GetTravelResult(List<String> journey_name, List<String> date, List<String> id, List<String> coordinates){ ;
+    public GetTravelResult(List<String> journey_name, List<String> date, List<String> id, List<String> coordinates,  List<String> shared){ ;
         this.journey_name = journey_name;
         this.date = date;
         this.id = id;
         this.coordinates = coordinates;
+        this.shared = shared;
     }
 
     public String getJourneyName() {
@@ -51,5 +55,7 @@ public class GetTravelResult{
     public String getCoordinates() {
         return coordinates.get(0) + ", " + coordinates.get(1);
     }
+
+    public String getShared() { return shared.get(0); }
 
 }

@@ -72,6 +72,14 @@ public class MapActivity extends AppCompatActivity {
             }
         });
 
+        fbtn_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MapActivity.this, ShareActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void setVisibility(Boolean clicked, View view){
