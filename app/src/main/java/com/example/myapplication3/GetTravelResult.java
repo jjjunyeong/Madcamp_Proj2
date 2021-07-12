@@ -56,7 +56,7 @@ public class GetTravelResult{
     public String getDate() { return date.get(0); }
 
     public String getCompanions() {
-        if(id.size() == 0) return null;
+        //if(id.size() == 0) return null;
         String ret = id.get(0);
         for(int i=1; i<id.size(); i++){
             ret = ret + ", " + id.get(i);

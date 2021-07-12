@@ -25,12 +25,14 @@ import retrofit2.Response;
 public class ShareActivity extends AppCompatActivity {
 
     private GridView gridView;
+    private String curr_id;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
         Intent intent = getIntent();
+        curr_id = intent.getStringExtra("id");
 
         gridView = findViewById(R.id.gridView);
 
@@ -84,8 +86,7 @@ public class ShareActivity extends AppCompatActivity {
                                             String g = adapter.getItemLat(i);
                                             String h = adapter.getItemLng(i);
                                             String j = adapter.getItemLikeIds(i);
-                                            String k = adapter.getItemUserId(i);
-                                            search_liked_item(a, b, c, d, e, f, g, h, j, k);
+                                            search_liked_item(a, b, c, d, e, f, g, h, j);
                                             dialog.cancel();
                                         }
                                     });
@@ -109,12 +110,16 @@ public class ShareActivity extends AppCompatActivity {
         });
     }
 
-    private void search_liked_item(String journey_name, String date, String cpns, String shared, String like, String coordinates, String lat, String lng, String likeids, String id) {
+    private void search_liked_item(String journey_name, String date, String cpns, String shared, String like, String coordinates, String lat, String lng, String likeids) {
         HashMap<String, String> map = new HashMap<>();
 
         map.put("journey_name", journey_name);
-        map.put("id", id);
-        map.put("likeids", id);
+
+        String[] subtokens = cpns.split(", ");
+        map.put("id", subtokens[0]);
+
+        //map.put("id", id);
+        map.put("likeids", curr_id);
 
         Call<Void> call = LoginActivity.retrofitInterface.searchSharedTravel(map);
 
@@ -125,7 +130,7 @@ public class ShareActivity extends AppCompatActivity {
                 if (response.code() == 200) {
                     Toast.makeText(getApplicationContext(), "Already liked this journey", Toast.LENGTH_SHORT).show();
                 } else if (response.code() == 404) {
-                    like_item(journey_name, date, cpns, shared, like, coordinates, lat, lng, likeids, id);
+                    like_item(journey_name, date, cpns, shared, like, coordinates, lat, lng, likeids, curr_id);
                 }
             }
 
@@ -192,12 +197,12 @@ public class ShareActivity extends AppCompatActivity {
         String[] subtokens5 = likeids.split(", ");
         List<String> arraylist7 = new ArrayList<>();
         for(int i=0; i<subtokens5.length; i++){
-            arraylist7.add(subtokens4[i]);
+            arraylist7.add(subtokens5[i]);
         }
-        if(arraylist7.get(0).equals("null")) {
+        if(temp == 0) {
             arraylist7.remove(0);
             arraylist7.add(id);
-        } else{
+        } else {
             arraylist7.add(id);
         }
         map.put("likeids", arraylist7);

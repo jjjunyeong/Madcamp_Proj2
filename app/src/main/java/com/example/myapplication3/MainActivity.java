@@ -27,7 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    String id;
+    String curr_id;
 
     FloatingActionButton fbtn_add, fbtn_mine, fbtn_share;
     Animation fromBottom, toBottom, rotateOpen, rotateClose;
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Intent intent = getIntent();
-        id = intent.getStringExtra("id");
+        curr_id = intent.getStringExtra("id");
 
         fromBottom = AnimationUtils.loadAnimation(MainActivity.this, R.anim.from_bottom_anim);
         toBottom = AnimationUtils.loadAnimation(MainActivity.this, R.anim.to_bottom_anim);
@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent_menu = new Intent(MainActivity.this, ShareActivity.class);
+                intent_menu.putExtra("id", curr_id);
                 startActivity(intent_menu);
             }
         });
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent_menu = new Intent(MainActivity.this, MenuActivity.class);
-                intent_menu.putExtra("id", id);
+                intent_menu.putExtra("id", curr_id);
                 startActivity(intent_menu);
             }
         });

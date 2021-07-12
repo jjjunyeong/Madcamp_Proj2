@@ -34,7 +34,7 @@ public class MenuActivity extends AppCompatActivity {
 
     private Button btn_add, btn_submit;
     private EditText et_jny_name, date, cpn1, cpn2, cpn3;
-    private String id, s_jny_name, s_date, s_cpn1, s_cpn2, s_cpn3;
+    private String curr_id, s_jny_name, s_date, s_cpn1, s_cpn2, s_cpn3;
     private ImageView check1, check2, check3, check4, check5;
     private GridView gridView;
 
@@ -44,7 +44,7 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         Intent intent = getIntent();
-        id = intent.getStringExtra("id");
+        curr_id = intent.getStringExtra("id");
 
         gridView = findViewById(R.id.gridView);
 
@@ -69,7 +69,7 @@ public class MenuActivity extends AppCompatActivity {
     //on grid item long-click, show dialog to modify/delete item info
     private void show_items(){
         HashMap<String, String> map = new HashMap<>();
-        map.put("id", id);
+        map.put("id", curr_id);
 
         Call<List<GetTravelResult>> call = LoginActivity.retrofitInterface.getTravel(map);
 
@@ -418,7 +418,7 @@ public class MenuActivity extends AppCompatActivity {
                 //after all inputs are verified, put information into Hashmap, upload on DB
                 if(check1.getVisibility() == v.INVISIBLE && check2.getVisibility() == v.INVISIBLE && check3.getVisibility() == v.INVISIBLE && check4.getVisibility() == v.INVISIBLE && check5.getVisibility() == v.INVISIBLE) {
                     List<String> arraylist3 = new ArrayList<>();
-                    arraylist3.add(id);
+                    arraylist3.add(curr_id);
                     if(!s_cpn1.replace(" ", "").equals("")){ arraylist3.add(s_cpn1); }
                     if(!s_cpn2.replace(" ", "").equals("")){ arraylist3.add(s_cpn2); }
                     if(!s_cpn3.replace(" ", "").equals("")){ arraylist3.add(s_cpn3); }
@@ -564,7 +564,7 @@ public class MenuActivity extends AppCompatActivity {
                     map.put("date", arraylist2);
 
                     List<String> arraylist3 = new ArrayList<>();
-                    arraylist3.add(id);
+                    arraylist3.add(curr_id);
                     if(!s_cpn1.replace(" ", "").equals("")){ arraylist3.add(s_cpn1); }
                     if(!s_cpn2.replace(" ", "").equals("")){ arraylist3.add(s_cpn2); }
                     if(!s_cpn3.replace(" ", "").equals("")){ arraylist3.add(s_cpn3); }
@@ -627,7 +627,7 @@ public class MenuActivity extends AppCompatActivity {
 
     //check DB if user(companion id) exists in DB
     public void check_user(String user, ImageView imageView, View view){
-        if(user.equals(id)){
+        if(user.equals(curr_id)){
             imageView.setVisibility(view.VISIBLE);
             return;
         }
